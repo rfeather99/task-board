@@ -8,10 +8,10 @@
           <li class="li00">PBI</li>
           <li
             v-for="(status, index) in statusses"
-            :key="status"
+            :key="status.id"
             :class="'li0' + (index + 1)"
           >
-            {{ status }}
+            {{ status.name }}
           </li>
         </ul>
       </li>
@@ -25,10 +25,10 @@
           <li
             v-for="(status, index) in statusses"
             :class="'li0' + (index + 1)"
-            :key="status"
+            :key="status.id"
           >
             <div
-              v-for="task in pbi.tasks.filter(t => t.status == status)"
+              v-for="task in pbi.tasks.filter(t => t.status == status.id)"
               :key="task.id"
               class="task"
             >
@@ -45,6 +45,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+type Status = {
+  id: number;
+  name: string;
+};
 type PBI = {
   id: number;
   title: string;
@@ -55,14 +59,19 @@ type Task = {
   title: string;
   description: string;
   assignee: string | null;
-  status: string;
+  status: number;
   point: number | null;
 };
 
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
-  private statusses: Array<string> = ["TODO", "DOING", "REVIEW", "DONE"];
+  private statusses: Array<Status> = [
+    { id: 0, name: "TODO" },
+    { id: 1, name: "DOING" },
+    { id: 2, name: "REVIEW" },
+    { id: 3, name: "DONE" }
+  ];
   private pbis: Array<PBI> = [
     {
       id: 0,
@@ -73,7 +82,7 @@ export default class HelloWorld extends Vue {
           title: "あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 1.0
         },
         {
@@ -81,7 +90,7 @@ export default class HelloWorld extends Vue {
           title: "あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "DOING",
+          status: 1,
           point: 0.5
         },
         {
@@ -89,7 +98,7 @@ export default class HelloWorld extends Vue {
           title: "あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "DONE",
+          status: 3,
           point: 1.0
         }
       ]
@@ -103,7 +112,7 @@ export default class HelloWorld extends Vue {
           title: "2あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 1.0
         },
         {
@@ -111,7 +120,7 @@ export default class HelloWorld extends Vue {
           title: "2あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 2.0
         },
         {
@@ -119,7 +128,7 @@ export default class HelloWorld extends Vue {
           title: "2あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "REVIEW",
+          status: 2,
           point: 1.0
         },
         {
@@ -127,7 +136,7 @@ export default class HelloWorld extends Vue {
           title: "2あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "DONE",
+          status: 3,
           point: 1.0
         }
       ]
@@ -141,7 +150,7 @@ export default class HelloWorld extends Vue {
           title: "3あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 1.0
         },
         {
@@ -149,7 +158,7 @@ export default class HelloWorld extends Vue {
           title: "3あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 2.0
         },
         {
@@ -157,7 +166,7 @@ export default class HelloWorld extends Vue {
           title: "3あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "REVIEW",
+          status: 2,
           point: 1.0
         },
         {
@@ -165,7 +174,7 @@ export default class HelloWorld extends Vue {
           title: "3あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "REVIEW",
+          status: 2,
           point: 1.0
         }
       ]
@@ -179,7 +188,7 @@ export default class HelloWorld extends Vue {
           title: "4あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 1.0
         },
         {
@@ -187,7 +196,7 @@ export default class HelloWorld extends Vue {
           title: "4あああああ",
           description: "あああああ",
           assignee: null,
-          status: "TODO",
+          status: 0,
           point: 2.0
         },
         {
@@ -195,7 +204,7 @@ export default class HelloWorld extends Vue {
           title: "4あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "REVIEW",
+          status: 2,
           point: 1.0
         },
         {
@@ -203,7 +212,7 @@ export default class HelloWorld extends Vue {
           title: "4あああああ",
           description: "あああああ",
           assignee: "山田一浪",
-          status: "REVIEW",
+          status: 2,
           point: 1.0
         }
       ]
